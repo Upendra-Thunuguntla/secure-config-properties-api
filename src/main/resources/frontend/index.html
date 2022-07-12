@@ -14,14 +14,11 @@
     <body class="bg-light">
         <div class="container">
             <div class="py-5 text-center">
-                <img class="d-block mx-auto mb-4" src="https://github.com/djuang1/djuang1.github.io/blob/master/img/mule_sfdc.png?raw=true" alt=""">
+                <img class="d-block mx-auto mb-4" src="https://github.com/djuang1/djuang1.github.io/blob/master/img/mule_sfdc.png?raw=true" alt="">
                 <h1>Secure Properties Generator</h1>
                 <p class="lead">Use this tool to generate MuleSoft secure configuration properties for your application. The tool currently only supports *.yaml files. For more details, click <a href="https://docs.mulesoft.com/mule-runtime/4.2/secure-configuration-properties">here.</a></p>
             </div>
-
             <div class="row">
-
-
                 <div class="col-12">
                     <div class="card">
                       <div class="card-header">
@@ -35,10 +32,12 @@
                           <li class="nav-item">
                             <a class="nav-link" href="#file-level" role="tab" aria-controls="file-level" aria-selected="false">File Level</a>
                           </li>
+                          <li class="nav-item">
+                            <a class="nav-link" href="#change-env" role="tab" aria-controls="change-env" aria-selected="false">Change Environment</a>
+                          </li>
                         </ul>
                       </div>
                       <div class="card-body">
-                        
                          <div class="tab-content mt-3">
                           <div class="tab-pane active" id="string" role="tabpanel">
                             <form id="form_string" action="api/string" method="post" enctype="multipart/form-data" autocomplete="off">
@@ -240,6 +239,90 @@
                                  
                             </form>
                           </div>
+
+                          <div class="tab-pane" id="change-env" role="tabpanel">
+                            <form id="form_change_env" action="api/change-env" method="post" enctype="multipart/form-data">
+                                <div class="row">
+                                    <div class="col-md-3 mb-3">
+                                        <label for="sourceEnv">Source</label>
+                                        <select class="custom-select d-block w-100" id="sourceEnv" name="sourceEnv" data-toggle="tooltip" data-placement="top" required>
+                                            <option value="dev" selected>Development</option>
+                                            <option value="qa">QA</option>
+                                            <option value="test">Test</option>
+                                            <option value="uat">UAT</option>
+                                            <option value="stg">Staging</option>
+                                            <option value="prod">Production</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="destEnv">Destination</label>
+                                        <select class="custom-select d-block w-100" id="destEnv" name="destEnv" data-toggle="tooltip" data-placement="top" required>
+                                            <option value="dev" >Development</option>
+                                            <option value="qa" selected>QA</option>
+                                            <option value="test">Test</option>
+                                            <option value="uat">UAT</option>
+                                            <option value="stg">Staging</option>
+                                            <option value="prod">Production</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="algorithm">Algorithm</label>
+                                        <select class="custom-select d-block w-100" id="algorithm" name="algorithm" data-toggle="tooltip" data-placement="top"  required>
+                                            <option value="AES" selected>AES (default)</option>
+                                            <option value="Blowfish">Blowfish</option>
+                                            <option value="DES">DES</option>
+                                            <option value="DESede">DESede</option>
+                                            <option value="RC2">RC2</option>
+                                            <option value="RCA">RCA</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please select an algorithm.
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3 mb-3">
+                                        <label for="state">State</label>
+                                        <select class="custom-select d-block w-100" id="mode" name="mode" required>
+                                            <option value="CBC" selected>CBC (default)</option>
+                                            <option value="CFB">CFB</option>
+                                            <option value="ECB">ECB</option>
+                                            <option value="OFB">OFB</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid mode.
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- algorithm and mode row-->
+            
+                                <div class="row">
+                                    <div class="col-md-4 mb-3">
+                                        <label for="key" id="oldkeylabel">Old Key</label>
+                                        <input type="text" class="form-control" id="oldkey" name="oldkey" required />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="key" id="newkeylabel">New Key</label>
+                                        <input type="text" class="form-control" id="newkey" name="newkey" required />
+                                    </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="value">Output File Name</label>
+                                        <input type="text" class="form-control" id="outputFile" name="outputFile" required />
+                                    </div>
+                                </div>
+                                <!-- key value row-->
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <label>Input File</label>
+                                    <div class="custom-file">
+                                        <label class="custom-file-label" id="inputfilelabel" for="inputEnvFile">Choose a properties file...</label>
+                                        <input type="file" class="form-control custom-file-input" name="inputEnvFile" id="inputEnvFile" required>
+                                    </div>
+                                    </div>
+                                </div>
+                                <input type="hidden" id="method" name="method" value="change-env" />
+                                <hr class="mb-4" />
+                                <input id="btn-submit" class="btn btn-primary btn-lg btn-block"  type="submit" name="submit" value="Generate" />
+                            </form>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -257,9 +340,9 @@
             </div> 
 
             <footer class="my-5 pt-5 text-muted text-center text-small">
-                <p class="mb-1">&copy; 2020 MuleSoft</p>
+                <p class="mb-1">&copy; 2022 MuleSoft</p>
                 <ul class="list-inline">
-                    <li class="list-inline-item"><a href="mailto:dejim.juang@mulesoft.com">dejim.juang@mulesoft.com</a></li>
+                    <li class="list-inline-item"><a href="mailto:dejim.juang@mulesoft.com">dejim.juang@mulesoft.com</a> &amp; <a href="mailto:muralidhar.thunuguntla@gmail.com">muralidhar.thunuguntla@gmail.com</a></li>
                   </ul>
             </footer>
         </div>
@@ -270,6 +353,33 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
 
+
+        <script>
+            
+        document.getElementById('inputEnvFile').onchange = function () {
+            var fileName = this.value.split('\\').pop();
+            document.getElementById("inputfilelabel").innerHTML = fileName;
+        };
+        function updateFieldNames() {
+            document.getElementById("oldkeylabel").innerHTML= "Key for " + sourceEnv.value ;
+            document.getElementById("newkeylabel").innerHTML= "Key for " + destEnv.value ;
+            document.getElementById("form_change_env").querySelector("#outputFile").value =  destEnv.value +"-secure-properties";
+        };
+
+
+        window.onload = function() {
+            updateFieldNames();
+        };
+
+        document.getElementById('sourceEnv').onchange = function () {
+            updateFieldNames();
+        };
+        
+        document.getElementById('destEnv').onchange = function () {
+            updateFieldNames();
+        };
+
+        </script>
         <script>
 
             $('#secure-type-list a').on('click', function (e) {
@@ -364,6 +474,7 @@
                 var post_url = $(this).attr("action"); //get form action url
                 var request_method = $(this).attr("method"); //get form GET/POST method
                 var form_data = new FormData(this); //Creates new FormData object
+                
                 $.ajax({
                     url: post_url,
                     type: request_method,
@@ -415,6 +526,69 @@
                     }
                 });
             });
+
+            $("#form_change_env").submit(function (event) {
+                event.preventDefault(); //prevent default action
+                var post_url = $(this).attr("action"); //get form action url
+                var request_method = $(this).attr("method"); //get form GET/POST method
+                var form_data = new FormData(this); //Creates new FormData object
+                form_data.append('fileName', inputfilelabel.innerHTML);
+                // console.log(form_data);
+                for (var pair of form_data.entries()) {
+                   console.log(pair[0]+ ', ' + pair[1]); 
+                }
+                $.ajax({
+                    url: post_url,
+                    type: request_method,
+                    data: form_data,
+                    contentType: false,
+                    cache: false,
+                    processData: false,
+                    success: function (response, status, xhr) {
+                        console.log("SUCCESS : ", response);
+                        console.log("STATUS : ", status);
+
+                        // check for a filename
+                        var filename = "";
+                        var disposition = xhr.getResponseHeader('Content-Disposition');
+                        if (disposition && disposition.indexOf('attachment') !== -1) {
+                            var filenameRegex = /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/;
+                            var matches = filenameRegex.exec(disposition);
+                            if (matches != null && matches[1]) filename = matches[1].replace(/['"]/g, '');
+                        }
+
+                        var type = xhr.getResponseHeader('Content-Type');
+                        var blob = new Blob([response], { type: type });
+
+                        var URL = window.URL || window.webkitURL;
+                        var downloadUrl = URL.createObjectURL(blob);
+
+                        if (filename) {
+                            // use HTML5 a[download] attribute to specify filename
+                            var a = document.createElement("a");
+                            // safari doesn't support this yet
+                            if (typeof a.download === 'undefined') {
+                                window.location = downloadUrl;
+                            } else {
+                                a.href = downloadUrl;
+                                a.download = filename;
+                                document.body.appendChild(a);
+                                a.click();
+                            }
+                        } else {
+                            window.location = downloadUrl;
+                        }
+
+                        setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                    },
+                    error: function (e) {
+                      $("#server-results").text(e.responseJSON.message);
+                      console.log("ERROR : ", e);
+                      $("#btn-submit").prop("disabled", false);
+                    }
+                });
+            });
+
         </script>
     </body>
 </html>
