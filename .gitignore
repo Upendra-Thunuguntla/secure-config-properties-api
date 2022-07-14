@@ -4,6 +4,7 @@
 *.class
 
 # Package Files #
+
 *.jar
 *.war
 *.ear
@@ -46,3 +47,9 @@ target/
 .mule/**/*
 .DS_Store
 velocity.log
+
+# ------ #
+# Others #
+# ------ #
+src/main/java/sample/**
+!src/main/resources/secure-properties-tool.jar

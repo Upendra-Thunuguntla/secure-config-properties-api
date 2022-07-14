@@ -10,13 +10,92 @@
 
         <title>Secure Properties Generator</title>
     </head>
+    <style>
+.loader  {
+  animation: rotate 1s infinite;  
+  height: 50px;
+  width: 50px;
+  visibility: hidden;
+}
 
+.loader.show {
+  visibility: visible;
+}
+
+.loader:before,
+.loader:after {   
+  border-radius: 50%;
+  content: '';
+  display: block;
+  height: 20px;  
+  width: 20px;
+}
+.loader:before {
+  animation: ball1 1s infinite;  
+  background-color: #cb2025;
+  box-shadow: 30px 0 0 #f8b334;
+  margin-bottom: 10px;
+}
+.loader:after {
+  animation: ball2 1s infinite; 
+  background-color: #00a096;
+  box-shadow: 30px 0 0 #97bf0d;
+}
+
+@keyframes rotate {
+  0% { 
+    -webkit-transform: rotate(0deg) scale(0.8); 
+    -moz-transform: rotate(0deg) scale(0.8);
+  }
+  50% { 
+    -webkit-transform: rotate(360deg) scale(1.2); 
+    -moz-transform: rotate(360deg) scale(1.2);
+  }
+  100% { 
+    -webkit-transform: rotate(720deg) scale(0.8); 
+    -moz-transform: rotate(720deg) scale(0.8);
+  }
+}
+
+@keyframes ball1 {
+  0% {
+    box-shadow: 30px 0 0 #f8b334;
+  }
+  50% {
+    box-shadow: 0 0 0 #f8b334;
+    margin-bottom: 0;
+    -webkit-transform: translate(15px,15px);
+    -moz-transform: translate(15px, 15px);
+  }
+  100% {
+    box-shadow: 30px 0 0 #f8b334;
+    margin-bottom: 10px;
+  }
+}
+
+@keyframes ball2 {
+  0% {
+    box-shadow: 30px 0 0 #97bf0d;
+  }
+  50% {
+    box-shadow: 0 0 0 #97bf0d;
+    margin-top: -20px;
+    -webkit-transform: translate(15px,15px);
+    -moz-transform: translate(15px, 15px);
+  }
+  100% {
+    box-shadow: 30px 0 0 #97bf0d;
+    margin-top: 0;
+  }
+}
+    </style>
     <body class="bg-light">
+        
         <div class="container">
             <div class="py-5 text-center">
                 <img class="d-block mx-auto mb-4" src="https://github.com/djuang1/djuang1.github.io/blob/master/img/mule_sfdc.png?raw=true" alt="">
                 <h1>Secure Properties Generator</h1>
-                <p class="lead">Use this tool to generate MuleSoft secure configuration properties for your application. The tool currently only supports *.yaml files. For more details, click <a href="https://docs.mulesoft.com/mule-runtime/4.2/secure-configuration-properties">here.</a></p>
+                <p class="lead">Use this tool to generate MuleSoft secure configuration properties for your application. <br>The tool supports both *.properties and *.yaml files. For more details, click <a href="https://docs.mulesoft.com/mule-runtime/4.2/secure-configuration-properties">here.</a></p>
             </div>
             <div class="row">
                 <div class="col-12">
@@ -39,8 +118,10 @@
                       </div>
                       <div class="card-body">
                          <div class="tab-content mt-3">
+
+                            <!--String section starts  -->
                           <div class="tab-pane active" id="string" role="tabpanel">
-                            <form id="form_string" action="api/string" method="post" enctype="multipart/form-data" autocomplete="off">
+                            <form id="form_string" action="api/string" method="post" enctype="multipart/form-data" >
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
                                         <label for="operation">Operation</label>
@@ -57,10 +138,23 @@
                                         <select class="custom-select d-block w-100" id="algorithm" name="algorithm" data-toggle="tooltip" data-placement="top" title="Tooltip on top" required>
                                             <option value="AES" selected>AES (default)</option>
                                             <option value="Blowfish">Blowfish</option>
+                                            <option value="CAST5">CAST5</option>
+                                            <option value="CAST6">CAST6</option>
+                                            <option value="Camellia">Camellia</option>
                                             <option value="DES">DES</option>
                                             <option value="DESede">DESede</option>
+                                            <option value="Noekeon">Noekeon</option>
                                             <option value="RC2">RC2</option>
-                                            <option value="RCA">RCA</option>
+                                            <option value="RC5">RC5</option>
+                                            <option value="RC6">RC6</option>
+                                            <option value="RSA">RSA</option>
+                                            <option value="Rijndael">Rijndael</option>
+                                            <option value="SEED">SEED</option>
+                                            <option value="Serpent">Serpent</option>
+                                            <option value="Skipjack">Skipjack</option>
+                                            <option value="TEA">TEA</option>
+                                            <option value="Twofish">Twofish</option>
+                                            <option value="XTEA">XTEA</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select an algorithm.
@@ -91,7 +185,7 @@
                                         <input type="text" class="form-control" id="value" name="value" required />
                                     </div>
                                 </div>
-                                <!-- key value row-->
+
             
                                 <input type="hidden" id="method" name="method" value="string" />
                                 <hr class="mb-4" />
@@ -100,7 +194,9 @@
                             </form>
                             
                           </div>
-                           
+                        <!-- String section ends -->
+
+                          <!-- File section starts -->
                           <div class="tab-pane" id="file" role="tabpanel">  
                             <form id="form_file" action="api/file" method="post" enctype="multipart/form-data">
                                 <div class="row">
@@ -119,10 +215,23 @@
                                         <select class="custom-select d-block w-100" id="algorithm" name="algorithm" data-toggle="tooltip" data-placement="top" title="Tooltip on top" required>
                                             <option value="AES" selected>AES (default)</option>
                                             <option value="Blowfish">Blowfish</option>
+                                            <option value="CAST5">CAST5</option>
+                                            <option value="CAST6">CAST6</option>
+                                            <option value="Camellia">Camellia</option>
                                             <option value="DES">DES</option>
                                             <option value="DESede">DESede</option>
+                                            <option value="Noekeon">Noekeon</option>
                                             <option value="RC2">RC2</option>
-                                            <option value="RCA">RCA</option>
+                                            <option value="RC5">RC5</option>
+                                            <option value="RC6">RC6</option>
+                                            <option value="RSA">RSA</option>
+                                            <option value="Rijndael">Rijndael</option>
+                                            <option value="SEED">SEED</option>
+                                            <option value="Serpent">Serpent</option>
+                                            <option value="Skipjack">Skipjack</option>
+                                            <option value="TEA">TEA</option>
+                                            <option value="Twofish">Twofish</option>
+                                            <option value="XTEA">XTEA</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select an algorithm.
@@ -141,7 +250,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- algorithm and mode row-->
+
             
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
@@ -150,18 +259,28 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="value">Output File Name</label>
-                                        <input type="text" class="form-control" id="outputFile" name="outputFile" value="secure-mule-properties.yaml" required />
+                                        <input type="text" class="form-control" id="outputFile" name="outputFile" required />
                                     </div>
                                 </div>
-                                <!-- key value row-->
 
+<!-- 
                                 <div class="row">
                                     <div class="col-md-12">
                                         <label for="inputFile">Input File</label>
                                         <input type="file" class="form-control-file" id="inputFile" name="inputFile">
                                     </div>
+                                </div> -->
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <label>Input File</label>
+                                    <div class="custom-file">
+                                        <label class="custom-file-label" id="inputfilelabel1" for="inputFile1">Choose a properties file...</label>
+                                        <input type="file" class="form-control custom-file-input" name="inputFile" id="inputFile1" required>
+                                    </div>
+                                    </div>
                                 </div>
-                                <!-- key value row-->
+
             
                                 <input type="hidden" id="method" name="method" value="file" />
                                 <hr class="mb-4" />
@@ -169,7 +288,11 @@
                                
                             </form>
                           </div>
-                           
+                        
+                            <!-- File section ends -->
+
+
+                            <!-- Whole File Level section starts -->
                           <div class="tab-pane" id="file-level" role="tabpanel">
                             <form id="form_file_level" action="api/file-level" method="post" enctype="multipart/form-data">
                                 <div class="row">
@@ -188,10 +311,23 @@
                                         <select class="custom-select d-block w-100" id="algorithm" name="algorithm" data-toggle="tooltip" data-placement="top" title="Tooltip on top" required>
                                             <option value="AES" selected>AES (default)</option>
                                             <option value="Blowfish">Blowfish</option>
+                                            <option value="CAST5">CAST5</option>
+                                            <option value="CAST6">CAST6</option>
+                                            <option value="Camellia">Camellia</option>
                                             <option value="DES">DES</option>
                                             <option value="DESede">DESede</option>
+                                            <option value="Noekeon">Noekeon</option>
                                             <option value="RC2">RC2</option>
-                                            <option value="RCA">RCA</option>
+                                            <option value="RC5">RC5</option>
+                                            <option value="RC6">RC6</option>
+                                            <option value="RSA">RSA</option>
+                                            <option value="Rijndael">Rijndael</option>
+                                            <option value="SEED">SEED</option>
+                                            <option value="Serpent">Serpent</option>
+                                            <option value="Skipjack">Skipjack</option>
+                                            <option value="TEA">TEA</option>
+                                            <option value="Twofish">Twofish</option>
+                                            <option value="XTEA">XTEA</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select an algorithm.
@@ -210,7 +346,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- algorithm and mode row-->
+   
             
                                 <div class="row">
                                     <div class="col-md-6 mb-3">
@@ -219,18 +355,27 @@
                                     </div>
                                     <div class="col-md-6 mb-3">
                                         <label for="value">Output File Name</label>
-                                        <input type="text" class="form-control" id="outputFile" name="outputFile" value="secure-mule-properties.yaml" required />
+                                        <input type="text" class="form-control" id="outputFile" name="outputFile" required />
                                     </div>
                                 </div>
-                                <!-- key value row-->
 
-                                <div class="row">
+
+                                <!-- <div class="row">
                                     <div class="col-md-12">
                                         <label for="inputFile">Input File</label>
                                         <input type="file" class="form-control-file" id="inputFile" name="inputFile">
                                     </div>
+                                </div> -->
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                    <label>Input File</label>
+                                    <div class="custom-file">
+                                        <label class="custom-file-label" id="inputfilelabel2" for="inputFile2">Choose a properties file...</label>
+                                        <input type="file" class="form-control custom-file-input" name="inputFile" id="inputFile2" required>
+                                    </div>
+                                    </div>
                                 </div>
-                                <!-- key value row-->
             
                                 <input type="hidden" id="method" name="method" value="file-level" />
                                 <hr class="mb-4" />
@@ -239,7 +384,9 @@
                                  
                             </form>
                           </div>
+                            <!-- Whole File Level section ends -->
 
+                            <!-- Change Env  section starts -->
                           <div class="tab-pane" id="change-env" role="tabpanel">
                             <form id="form_change_env" action="api/change-env" method="post" enctype="multipart/form-data">
                                 <div class="row">
@@ -252,6 +399,7 @@
                                             <option value="uat">UAT</option>
                                             <option value="stg">Staging</option>
                                             <option value="prod">Production</option>
+                                            <option value="other">Other</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 mb-3">
@@ -263,6 +411,7 @@
                                             <option value="uat">UAT</option>
                                             <option value="stg">Staging</option>
                                             <option value="prod">Production</option>
+                                            <option value="some-other">Some Other</option>
                                         </select>
                                     </div>
                                     <div class="col-md-3 mb-3">
@@ -270,10 +419,23 @@
                                         <select class="custom-select d-block w-100" id="algorithm" name="algorithm" data-toggle="tooltip" data-placement="top"  required>
                                             <option value="AES" selected>AES (default)</option>
                                             <option value="Blowfish">Blowfish</option>
+                                            <option value="CAST5">CAST5</option>
+                                            <option value="CAST6">CAST6</option>
+                                            <option value="Camellia">Camellia</option>
                                             <option value="DES">DES</option>
                                             <option value="DESede">DESede</option>
+                                            <option value="Noekeon">Noekeon</option>
                                             <option value="RC2">RC2</option>
-                                            <option value="RCA">RCA</option>
+                                            <option value="RC5">RC5</option>
+                                            <option value="RC6">RC6</option>
+                                            <option value="RSA">RSA</option>
+                                            <option value="Rijndael">Rijndael</option>
+                                            <option value="SEED">SEED</option>
+                                            <option value="Serpent">Serpent</option>
+                                            <option value="Skipjack">Skipjack</option>
+                                            <option value="TEA">TEA</option>
+                                            <option value="Twofish">Twofish</option>
+                                            <option value="XTEA">XTEA</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select an algorithm.
@@ -292,7 +454,7 @@
                                         </div>
                                     </div>
                                 </div>
-                                <!-- algorithm and mode row-->
+                          
             
                                 <div class="row">
                                     <div class="col-md-4 mb-3">
@@ -308,13 +470,13 @@
                                         <input type="text" class="form-control" id="outputFile" name="outputFile" required />
                                     </div>
                                 </div>
-                                <!-- key value row-->
+                    
                                 <div class="row">
                                     <div class="col-md-12">
                                     <label>Input File</label>
                                     <div class="custom-file">
-                                        <label class="custom-file-label" id="inputfilelabel" for="inputEnvFile">Choose a properties file...</label>
-                                        <input type="file" class="form-control custom-file-input" name="inputEnvFile" id="inputEnvFile" required>
+                                        <label class="custom-file-label" id="inputfilelabel3" for="inputFile3">Choose a properties file...</label>
+                                        <input type="file" class="form-control custom-file-input" name="inputFile" id="inputFile3" required>
                                     </div>
                                     </div>
                                 </div>
@@ -324,27 +486,35 @@
                             </form>
                           </div>
                         </div>
+                        <!-- Change Env  section starts -->
                       </div>
                     </div>
                   </div>
             </div>
 
-            <hr class="mb-4" />
-            <div class="card text-center">
-              <div class="card-header">
-                Result
-              </div>
+            <!-- Loading animation -->
+            <div style="align-items: center; justify-content: center; display: flex;">
+                <div id="loader_anim" class="loader"></div>
+            </div>
+            <!-- End of loading animation -->
+
+            <!-- Output section -->
+            <div class="card text-center" >
+              <div class="card-header">Result</div>
               <div class="card-body">
                 <p class="card-text" id="server-results"></p>                              
               </div>
             </div> 
+            <!-- End of output section -->
 
+            <!-- Footer -->
             <footer class="my-5 pt-5 text-muted text-center text-small">
                 <p class="mb-1">&copy; 2022 MuleSoft</p>
                 <ul class="list-inline">
                     <li class="list-inline-item"><a href="mailto:dejim.juang@mulesoft.com">dejim.juang@mulesoft.com</a> &amp; <a href="mailto:muralidhar.thunuguntla@gmail.com">muralidhar.thunuguntla@gmail.com</a></li>
                   </ul>
             </footer>
+            <!-- End of footer -->
         </div>
 
         <!-- Optional JavaScript -->
@@ -355,29 +525,91 @@
 
 
         <script>
-            
-        document.getElementById('inputEnvFile').onchange = function () {
-            var fileName = this.value.split('\\').pop();
-            document.getElementById("inputfilelabel").innerHTML = fileName;
-        };
-        function updateFieldNames() {
-            document.getElementById("oldkeylabel").innerHTML= "Key for " + sourceEnv.value ;
-            document.getElementById("newkeylabel").innerHTML= "Key for " + destEnv.value ;
-            document.getElementById("form_change_env").querySelector("#outputFile").value =  destEnv.value +"-secure-properties";
-        };
 
+            function updateFieldNames(sectionNumber, fileName) {
+                console.log(fileName);
+                document.getElementById("oldkeylabel").innerHTML = "Key for " + sourceEnv.value;
+                document.getElementById("newkeylabel").innerHTML = "Key for " + destEnv.value;
+                document.getElementById("form_change_env").querySelector("#outputFile").value = destEnv.value + "-secure-properties";
 
-        window.onload = function() {
-            updateFieldNames();
-        };
+                if (sectionNumber == 1) {
+                    if (fileName != ""){
+                        document.getElementById("inputfilelabel1").innerHTML = fileName;
+                    }
+                    document.getElementById("form_file").querySelector("#outputFile").value =
+                        fileName.split('.')[0] + "-" +
+                        document.getElementById("form_file").querySelector("#operation").value + "ed";
+                } else if (sectionNumber == 2) {
+                    if (fileName != ""){
+                        document.getElementById("inputfilelabel2").innerHTML = fileName;
+                    }
+                    document.getElementById("form_file_level").querySelector("#outputFile").value =
+                        fileName.split('.')[0] + "-" +
+                        document.getElementById("form_file_level").querySelector("#operation").value + "ed";
+                }
+            };
 
-        document.getElementById('sourceEnv').onchange = function () {
-            updateFieldNames();
-        };
-        
-        document.getElementById('destEnv').onchange = function () {
-            updateFieldNames();
-        };
+            window.onload = function () {
+                updateFieldNames();
+            };
+
+            document.getElementById('sourceEnv').onchange = function () {
+                updateFieldNames();
+            };
+
+            document.getElementById('destEnv').onchange = function () {
+                updateFieldNames();
+            };
+
+            document.getElementById('inputFile1').onchange = function () {
+                if (validateFile(this)) {
+                    var fileName = this.value.split('\\').pop();
+                    updateFieldNames(1, fileName);
+                }
+            };
+
+            document.getElementById('inputFile2').onchange = function () {
+                if (validateFile(this)) {
+                    var fileName = this.value.split('\\').pop();
+                    updateFieldNames(2, fileName);
+                }
+            };
+
+            document.getElementById('inputFile3').onchange = function () {
+                var fileName = this.value.split('\\').pop();
+                document.getElementById("inputfilelabel3").innerHTML = fileName;
+            };
+
+            document.getElementById("form_file").querySelector("#operation").onchange = function () {
+                updateFieldNames(1, document.getElementById("inputfilelabel1").innerHTML.replace("Choose a properties file...",""));
+            };
+
+            document.getElementById("form_file_level").querySelector("#operation").onchange = function () {
+                updateFieldNames(2, document.getElementById("inputfilelabel2").innerHTML.replace("Choose a properties file...",""));
+            };
+
+            function validateFile(file) {
+                var fileName = file.value.split('\\').pop();
+                var fileExt = fileName.split('.').pop().toLowerCase();
+                if (fileExt != "properties" && fileExt != "yaml") {
+                    alert("Please select a properties or YAML file");
+                    file.value = "";
+                    return false;
+                }
+                return true;
+            }
+            // document.getElementById("change-env-nav").onclick = function() {
+            //     document.getElementsByClassName("lead")[0].innerHTML = "Use this tool to generate MuleSoft secure configuration properties for your application.</br> The Change Environment tool supports *.yaml & *.properties files. For more details, click <a href=\"https://docs.mulesoft.com/mule-runtime/4.2/secure-configuration-properties\">here.";
+            // }
+
+            //For loading screen
+            var loader = document.getElementById("loader_anim");
+            function displayLoader() {
+                loader.style.visibility = "visible";
+            }
+            function hideLoader() {
+                loader.style.visibility = "hidden";
+            }
 
         </script>
         <script>
@@ -417,6 +649,7 @@
                 var post_url = $(this).attr("action"); //get form action url
                 var request_method = $(this).attr("method"); //get form GET/POST method
                 var form_data = new FormData(this); //Creates new FormData object
+                form_data.append('fileName', inputfilelabel1.innerHTML);
                 $.ajax({
                     url: post_url,
                     type: request_method,
@@ -424,6 +657,9 @@
                     contentType: false,
                     cache: false,
                     processData: false,
+                    beforeSend: function(){
+                        displayLoader();
+                    },
                     success: function (response, status, xhr) {
                         console.log("SUCCESS : ", response);
                         console.log("STATUS : ", status);
@@ -462,9 +698,12 @@
                         setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
                     },
                     error: function (e) {
-                      $("#server-results").text(e.responseJSON.message);
+                      $("#server-results").text(e.responseJSON);
                       console.log("ERROR : ", e);
                       $("#btn-submit").prop("disabled", false);
+                    },
+                    complete: function(){
+                        hideLoader();
                     }
                 });
             });
@@ -474,7 +713,7 @@
                 var post_url = $(this).attr("action"); //get form action url
                 var request_method = $(this).attr("method"); //get form GET/POST method
                 var form_data = new FormData(this); //Creates new FormData object
-                
+                form_data.append('fileName', inputfilelabel2.innerHTML);
                 $.ajax({
                     url: post_url,
                     type: request_method,
@@ -482,6 +721,9 @@
                     contentType: false,
                     cache: false,
                     processData: false,
+                    beforeSend: function(){
+                        displayLoader();
+                    },
                     success: function (response, status, xhr) {
                         console.log("SUCCESS : ", response);
                         console.log("STATUS : ", status);
@@ -520,9 +762,12 @@
                         setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
                     },
                     error: function (e) {
-                      $("#server-results").text(e.responseJSON.message);
+                      $("#server-results").text(e.responseJSON);
                       console.log("ERROR : ", e);
                       $("#btn-submit").prop("disabled", false);
+                    },
+                    complete: function(){
+                        hideLoader();
                     }
                 });
             });
@@ -532,7 +777,7 @@
                 var post_url = $(this).attr("action"); //get form action url
                 var request_method = $(this).attr("method"); //get form GET/POST method
                 var form_data = new FormData(this); //Creates new FormData object
-                form_data.append('fileName', inputfilelabel.innerHTML);
+                form_data.append('fileName', inputfilelabel3.innerHTML);
                 // console.log(form_data);
                 for (var pair of form_data.entries()) {
                    console.log(pair[0]+ ', ' + pair[1]); 
@@ -544,6 +789,9 @@
                     contentType: false,
                     cache: false,
                     processData: false,
+                    beforeSend: function(){
+                        displayLoader();
+                    },
                     success: function (response, status, xhr) {
                         console.log("SUCCESS : ", response);
                         console.log("STATUS : ", status);
@@ -582,9 +830,13 @@
                         setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
                     },
                     error: function (e) {
-                      $("#server-results").text(e.responseJSON.message);
+                      $("#server-results").text(e.responseJSON);
                       console.log("ERROR : ", e);
                       $("#btn-submit").prop("disabled", false);
+                      hideLoader();
+                    },
+                    complete: function(){
+                        hideLoader();
                     }
                 });
             });

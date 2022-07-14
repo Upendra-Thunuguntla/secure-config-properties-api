@@ -76,8 +76,11 @@ types:
           inputFile: 
             displayName: Input file location
             type: file
-            fileTypes: ['*/yaml']
             maxLength: 10485760 # 10 MB = 10485760 Bytes
+          fileName:
+            displayName: Input file name with extention
+            type: string
+            required: true            
           outputFile:
             displayName: Output file name
             type: string
@@ -111,11 +114,50 @@ types:
           inputFile: 
             displayName: Input file
             type: file
-            fileTypes: ['*/yaml']
             maxLength: 10485760 # 10 MB = 10485760 Bytes
+          fileName:
+            displayName: Input file name with extention
+            type: string
+            required: true
           outputFile:
             displayName: Output file name
             type: string
             default: secure-properties.yaml
             required: true
 
+/change-env:
+  displayName: Change Environment 
+  description: Use the following syntax to decrypt and encrypt all values inside a properties file.
+  post:
+    body:
+      multipart/form-data:
+        properties: 
+          algorithm:
+            required: true
+            default: AES
+            type: string
+            enum: [AES, Blowfish, DES, DESede, RC2, RCA]          
+          mode:
+            required: true
+            type: string
+            default: CBC
+            enum: [CBC, CFB, ECB, OFB]
+          oldkey:
+            type: string
+            required: true        
+          newkey:
+            type: string
+            required: true        
+          inputEnvFile: 
+            displayName: Input file location
+            type: file
+            maxLength: 10485760 # 10 MB = 10485760 Bytes
+          fileName:
+            displayName: Input file name with extention
+            type: string
+            required: true
+          outputFile:
+            displayName: Output file name
+            type: string
+            default: secure-properties
+            required: true

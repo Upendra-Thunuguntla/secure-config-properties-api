@@ -9,8 +9,6 @@
     </http:listener-config>
     <apikit:config name="secure-properties-api-config" api="secure-properties-api.raml" outboundHeadersMapName="outboundHeaders" httpStatusVarName="httpStatus" />
     <file:config name="File_Config" doc:name="File Config" doc:id="17a4b774-2a13-4ac3-be1c-22f25c0ea68e" />
-    <secure-properties:config name="Secure_Properties_Config" doc:name="Secure Properties Config" doc:id="bf5b950e-6d36-4f3a-b4fa-f840f610fd47" file="config.secure.dev.yaml" key="${securePropertiesKey}" />
-    <global-property doc:name="Global Property" doc:id="35174888-ac2b-49c7-a411-17ea9eb69a07" name="securePropertiesKey" value="Mu!3s0f+K3y3ncry" />
     <flow name="secure-properties-api-main">
         <http:listener config-ref="secure-properties-api-httpListenerConfig" path="/api/*">
             <http:response statusCode="#[vars.httpStatus default 200]">
@@ -29,10 +27,10 @@
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Bad request"}]]></ee:set-payload>
+"Bad request"]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">400</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[400]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
@@ -42,7 +40,7 @@ output application/json
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Resource not found"}]]></ee:set-payload>
+"Resource not found"]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
                         <ee:set-variable variableName="httpStatus">404</ee:set-variable>
@@ -55,7 +53,7 @@ output application/json
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Method not allowed"}]]></ee:set-payload>
+"Method not allowed"]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
                         <ee:set-variable variableName="httpStatus">405</ee:set-variable>
@@ -68,7 +66,7 @@ output application/json
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Not acceptable"}]]></ee:set-payload>
+"Not acceptable"]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
                         <ee:set-variable variableName="httpStatus">406</ee:set-variable>
@@ -81,7 +79,7 @@ output application/json
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Unsupported media type"}]]></ee:set-payload>
+"Unsupported media type"]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
                         <ee:set-variable variableName="httpStatus">415</ee:set-variable>
@@ -94,7 +92,7 @@ output application/json
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Not Implemented"}]]></ee:set-payload>
+"Not Implemented"]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
                         <ee:set-variable variableName="httpStatus">501</ee:set-variable>
@@ -107,9 +105,7 @@ output application/json
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{
-	message: error.description
-}]]></ee:set-payload>
+error.description]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
                         <ee:set-variable variableName="httpStatus"><![CDATA[422]]></ee:set-variable>
@@ -123,9 +119,7 @@ output application/json
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{
-	message: error.description
-}]]></ee:set-payload>
+error.description]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
                         <ee:set-variable variableName="httpStatus"><![CDATA[500]]></ee:set-variable>
@@ -152,10 +146,10 @@ output application/json
                         <ee:set-payload><![CDATA[%dw 2.0
 output application/json
 ---
-{message: "Resource not found"}]]></ee:set-payload>
+"Resource not found"]]></ee:set-payload>
                     </ee:message>
                     <ee:variables>
-                        <ee:set-variable variableName="httpStatus">404</ee:set-variable>
+                        <ee:set-variable variableName="httpStatus"><![CDATA[404]]></ee:set-variable>
                     </ee:variables>
                 </ee:transform>
             </on-error-propagate>
@@ -163,23 +157,48 @@ output application/json
     </flow>
     <flow name="secure-properties-apiFlow" doc:id="1fe26673-f5ac-45d3-8df0-dbfaa46cca94">
         <http:listener doc:name="Listener" doc:id="6fa9aad9-3ef6-4f6c-9e95-ecb18a81d07d" config-ref="secure-properties-api-httpListenerConfig" path="/" />
-        <parse-template doc:name="Parse Template" doc:id="af5249f0-e9aa-4877-b482-d08b9b058be9" location="frontend\index.html" />
+        <parse-template doc:name="index.html" doc:id="af5249f0-e9aa-4877-b482-d08b9b058be9" location="frontend\index.html" />
     </flow>
 	<flow name="post:\string:multipart\form-data:secure-properties-api-config">
         <logger level="INFO" doc:name="Logger" doc:id="e74daed2-148c-4e2b-8cb8-4ee5dcd47071" />
-        <set-variable value="#[output application/java --- payload.parts.operation.content]" doc:name="operation" doc:id="503a6af9-9a72-4881-bf1a-114b8c2eeedb" variableName="operation" />
-        <set-variable value="#[output application/java --- payload.parts.algorithm.content]" doc:name="algorithm" doc:id="17b77276-0fe0-4265-9788-17ef2089793d" variableName="algorithm" />
-        <set-variable value="#[output application/java --- payload.parts.mode.content]" doc:name="mode" doc:id="2ac2d1c8-f76f-4d29-8bc7-8e0831c1b679" variableName="mode" />
-        <set-variable value="#[output application/java --- payload.parts.key.content replace &quot;%&quot; with &quot;%%&quot;]" doc:name="key" doc:id="fd424515-e028-4176-8024-684387a731ea" variableName="key" />
-        <set-variable value="#[output application/java --- payload.parts.value.content]" doc:name="value" doc:id="acf2bf95-8c1d-4db8-b114-b7ffaa1f6b2d" variableName="value" />
-        <java:new doc:name="New" doc:id="4462a417-6a11-4b66-993f-a0435c734d3b" class="com.dejim.SecurePropertiesWrapper" constructor="SecurePropertiesWrapper()" />
-        <java:invoke doc:name="Invoke" doc:id="99b0131d-d336-4102-8778-7fbf8b16991c" instance="#[payload]" class="com.dejim.SecurePropertiesWrapper" method="secureString(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+        <ee:transform doc:name="DW Fetch Form Data to Vars" doc:id="789dd4db-6bf1-4ce1-a70a-b561c69e2813">
+	<ee:message>
+	</ee:message>
+	<ee:variables>
+			<ee:set-variable variableName="operation"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.operation.content]]></ee:set-variable>
+		<ee:set-variable variableName="algorthim"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.algorithm.content]]></ee:set-variable>
+		<ee:set-variable variableName="mode"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.mode.content]]></ee:set-variable>
+		<ee:set-variable variableName="key"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.key.content]]></ee:set-variable>
+		<ee:set-variable variableName="value"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.value.content]]></ee:set-variable>
+		<ee:set-variable variableName="processing_folder"><![CDATA[%dw 2.0
+output application/java
+---
+p("app.home") ++ "/processing_space"]]></ee:set-variable>
+</ee:variables>
+</ee:transform>
+        <java:new doc:name="SecurePropertiesWrapper()" doc:id="4462a417-6a11-4b66-993f-a0435c734d3b" class="com.dejim.SecurePropertiesWrapper" constructor="SecurePropertiesWrapper()" />
+        <java:invoke doc:name="secureString" doc:id="99b0131d-d336-4102-8778-7fbf8b16991c" instance="#[payload]" class="com.dejim.SecurePropertiesWrapper" method="secureString(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
             <java:args><![CDATA[#[output application/java
 ---
 {
-	arg0: p('app.home'),
+	arg0: vars.processing_folder,
 	arg1: vars.operation,
-	arg2: vars.algorithm,
+	arg2: vars.algorthim,
 	arg3: vars.mode,
 	arg4: vars.key as String,
 	arg5: vars.value
@@ -193,7 +212,7 @@ output application/json
                 </on-error-propagate>
             </error-handler>
         </try>
-        <ee:transform doc:name="Transform Message" doc:id="81201ada-6ff2-488d-afe1-29cbb25612f7">
+        <ee:transform doc:name="DW Set Payload" doc:id="81201ada-6ff2-488d-afe1-29cbb25612f7">
             <ee:message>
                 <ee:set-payload><![CDATA[%dw 2.0
 output application/json
@@ -204,97 +223,134 @@ output application/json
             </ee:message>
         </ee:transform>
     </flow>
-	<flow name="post:\file-level:multipart\form-data:secure-properties-api-config">
-        <logger level="INFO" message="post:\file-level:multipart\form-data:secure-properties-api-config" />
-        <set-variable value="#[output application/java --- payload.parts.inputFile.headers.'Content-Type']" doc:name="contentType" doc:id="cc09c987-519b-43a2-9f40-f27f9875948e" variableName="contentType" />
-        <!-- [STUDIO:"Try"]		<try doc:name="Try" doc:id="5a059cd9-8bd5-4335-b8d1-848c5c7fbb4c" >
-			<validation:is-true doc:name="Is true" doc:id="5f2acb67-f0e2-41bf-95f7-e9ca03f3bb66" expression="#[vars.contentType == 'application/x-yaml' or vars.contentType == 'text/yaml']"/>
-			<error-handler >
-				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="4a63cde3-22d2-4c1d-b911-7aa17e5d09e0" >
-					<raise-error doc:name="Raise error" doc:id="3e862e37-7cf0-4aac-bc9a-87ea39b30db4" type="APP:FILE_TYPE" description="Wrong input file type. File must be in *.yaml format."/>
-				</on-error-propagate>
-			</error-handler>
-		</try> [STUDIO] -->
-        <set-variable value="#[output application/java --- payload.parts.operation.content]" doc:name="operation" doc:id="6c456b40-8fca-4fee-8df7-7399b4d32d77" variableName="operation" />
-        <set-variable value="#[output application/java --- payload.parts.algorithm.content]" doc:name="algorithm" doc:id="7950deb8-1724-4fb7-903c-ced98b2c90c7" variableName="algorithm" />
-        <set-variable value="#[output application/java --- payload.parts.mode.content]" doc:name="mode" doc:id="eaca48e5-26be-419c-b185-0124e3beb161" variableName="mode" />
-        <set-variable value="#[output application/java --- payload.parts.key.content]" doc:name="key" doc:id="d7352ea0-2bd8-49c5-a9a4-b78c733d4011" variableName="key" />
-        <set-variable value="#[output application/java --- payload.parts.outputFile.content]" doc:name="outputFile" doc:id="dfed26cd-f445-434d-a188-684291f546af" variableName="outputFile" />
-        <file:write doc:name="Write" doc:id="b52120c7-f225-4bf7-af46-934d066c6803" config-ref="File_Config" path="#[p('app.home') ++ &quot;/file.yaml&quot;]">
-            <file:content><![CDATA[#[payload.parts.inputFile.content]]]></file:content>
-        </file:write>
-        <java:new doc:name="New" doc:id="076629d4-d44b-438d-863e-58e9d847120f" class="com.dejim.SecurePropertiesWrapper" constructor="SecurePropertiesWrapper()" />
-        <java:invoke doc:name="Invoke" doc:id="03ae584f-ea47-4dee-a011-3866ddc3e3a3" instance="#[payload]" class="com.dejim.SecurePropertiesWrapper" method="secureFileLevel(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
-            <java:args><![CDATA[#[output application/java
----
-{
-	arg0: p('app.home'),
-	arg1: vars.operation,
-	arg2: vars.algorithm,
-	arg3: vars.mode,
-	arg4: vars.key,
-	arg5: p('app.home') ++ "/file.yaml",
-	arg6: vars.outputFile
-}]]]></java:args>
-        </java:invoke>
-        <try doc:name="Try" doc:id="22777d68-3916-47c3-8e1b-2fb1a590477f">
-            <validation:is-false doc:name="Is false" doc:id="8abdf8c7-3424-439c-934e-9d13816dbc47" expression="#[payload startsWith(&quot;Invalid&quot;)]" />
-            <error-handler>
-                <on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5a8d98de-383a-4a50-9f25-790b99866aa0">
-                    <raise-error doc:name="Raise error" doc:id="ab634444-658e-4a24-97cc-6905e7cb0dee" type="APP:ENCRYPT_ERROR" description="#[&quot;Error encrypting file: &quot; ++ payload]" />
-                </on-error-propagate>
-            </error-handler>
-        </try>
-        <set-variable value="#[%dw 2.0 import * from dw::core::Binaries output application/java --- (vars.outboundHeaders default {}) ++ {&quot;Content-Disposition&quot;:&quot;attachment; filename=&quot; ++ vars.outputFile, &quot;Content-Type&quot;:&quot;application/octet-stream&quot;}]" doc:name="Set Variable" doc:id="c52ee2ab-ae58-4164-b2a1-3408b4728545" variableName="outboundHeaders" />
-        <file:read doc:name="Read" doc:id="f54d8d6a-29a2-4cb9-ae23-671dfe88ec1b" path="#[p('app.home') ++ &quot;/&quot; ++ vars.outputFile]" outputMimeType="application/octet-stream" />
-    </flow>
-    <flow name="post:\file:multipart\form-data:secure-properties-api-config">
+	<flow name="post:\file:multipart\form-data:secure-properties-api-config">
         <logger level="INFO" message="post:\file:multipart\form-data:secure-properties-api-config" />
-        <set-variable value="#[output application/java --- payload.parts.inputFile.headers.'Content-Type']" doc:name="contentType" doc:id="9ba08efa-b4b0-4d59-b796-3daefb137982" variableName="contentType" />
-        <!-- [STUDIO:"Try"]		<try doc:name="Try" doc:id="595b1142-6da2-4f4e-a134-91be17d51281" >
-			<validation:is-true doc:name="Is true" doc:id="95fdf990-ddcd-4deb-8047-a95bf5db34bd" expression="#[vars.contentType == 'application/x-yaml' or vars.contentType == 'text/yaml']"/>
-			<error-handler >
-				<on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="5b277253-38ab-4369-a10e-f8d68b0ddcd2" >
-					<raise-error doc:name="Raise error" doc:id="11851a31-7f19-4506-9b4b-d23339d3f96a" type="APP:ENCRYPT_ERROR" description="Wrong input file type. File must be in *.yaml format."/>
-				</on-error-propagate>
-			</error-handler>
-		</try> [STUDIO] -->
-        <set-variable value="#[output application/java --- payload.parts.operation.content]" doc:name="operation" doc:id="1c4be073-8e52-4036-b62d-ee49868effa4" variableName="operation" />
-        <set-variable value="#[output application/java --- payload.parts.algorithm.content]" doc:name="algorithm" doc:id="1830683f-ea7d-4f58-a697-35b91527db81" variableName="algorithm" />
-        <set-variable value="#[output application/java --- payload.parts.mode.content]" doc:name="mode" doc:id="a0cd57fb-de67-47e7-91e4-cab79a5da07c" variableName="mode" />
-        <set-variable value="#[output application/java --- payload.parts.key.content]" doc:name="key" doc:id="a64ef7e8-5516-4498-84df-fb63bbc351de" variableName="key" />
-        <set-variable value="#[output application/java --- payload.parts.outputFile.content]" doc:name="outputFile" doc:id="ac653e78-4ce0-4196-b02b-91abb0bdc414" variableName="outputFile" />
-        <file:write doc:name="Write" doc:id="f73c2fb6-c040-4569-a44b-1885c5079a9d" config-ref="File_Config" path="#[p('app.home') ++ &quot;/file.yaml&quot;]">
+        <ee:transform doc:name="DW Fetch Form Data to Vars" doc:id="14ada2d8-12ed-4c45-8e38-806e75fda488">
+	<ee:message>
+	</ee:message>
+	<ee:variables>
+			<ee:set-variable variableName="operation"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.operation.content]]></ee:set-variable>
+		<ee:set-variable variableName="algorthim"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.algorithm.content]]></ee:set-variable>
+		<ee:set-variable variableName="mode"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.mode.content]]></ee:set-variable>
+		<ee:set-variable variableName="key"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.key.content]]></ee:set-variable>
+		<ee:set-variable variableName="outputfile"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.outputFile.content]]></ee:set-variable>
+		<ee:set-variable variableName="inputFile"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.inputFile.content]]></ee:set-variable>
+		<ee:set-variable variableName="inputFileName"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.fileName.content ]]></ee:set-variable>
+		<ee:set-variable variableName="fileExt"><![CDATA[%dw 2.0
+output application/java
+---
+splitBy(payload.parts.fileName.content as String,".")[-1]]]></ee:set-variable>
+		<ee:set-variable variableName="processing_folder"><![CDATA[%dw 2.0
+output application/java
+---
+p("app.home") ++ "/processing_space"]]></ee:set-variable>
+	</ee:variables>
+</ee:transform>
+        <file:write doc:name="input file" doc:id="f73c2fb6-c040-4569-a44b-1885c5079a9d" config-ref="File_Config" path='#[vars.processing_folder ++ "/" ++ vars.inputFileName]'>
             <file:content><![CDATA[#[payload.parts.inputFile.content]]]></file:content>
         </file:write>
-        <java:new doc:name="New" doc:id="becd6d44-9ad4-4711-95e6-8f8ba7945c91" class="com.dejim.SecurePropertiesWrapper" constructor="SecurePropertiesWrapper()" />
-        <java:invoke doc:name="Invoke" doc:id="ee6772ed-aeb4-4ee9-a392-b42d5723cb88" instance="#[payload]" class="com.dejim.SecurePropertiesWrapper" method="secureFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+        <java:new doc:name="SecurePropertiesWrapper()" doc:id="becd6d44-9ad4-4711-95e6-8f8ba7945c91" class="com.dejim.SecurePropertiesWrapper" constructor="SecurePropertiesWrapper()" />
+        <java:invoke doc:name="secureFile" doc:id="ee6772ed-aeb4-4ee9-a392-b42d5723cb88" instance="#[payload]" class="com.dejim.SecurePropertiesWrapper" method="secureFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
             <java:args><![CDATA[#[output application/java
 ---
 {
-	arg0: p('app.home'),
+	arg0: vars.processing_folder,
 	arg1: vars.operation,
-	arg2: vars.algorithm,
+	arg2: vars.algorthim,
 	arg3: vars.mode,
 	arg4: vars.key,
-	arg5: p('app.home') ++ "/file.yaml",
-	arg6: vars.outputFile
+	arg5: vars.processing_folder ++ "/" ++ vars.inputFileName,
+	arg6: vars.outputfile ++ "." ++ vars.fileExt
 }]]]></java:args>
         </java:invoke>
-        <try doc:name="Try" doc:id="4860aa6b-90e4-433c-86f9-63c758da268b">
-            <validation:is-false doc:name="Is false" doc:id="9bd3790a-638e-482e-8471-e0b6109b659b" expression="#[payload startsWith(&quot;Invalid&quot;)]" />
-            <error-handler>
-                <on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="cbfbdc77-f7cd-481a-a785-c6fbb22ed998">
-                    <raise-error doc:name="Raise error" doc:id="9284bef3-6f53-4109-bfa3-7b763389c27f" type="APP:ENCRYPT_ERROR" description="#[&quot;Error encrypting file: &quot; ++ payload]" />
-                </on-error-propagate>
-            </error-handler>
-        </try>
-        <set-variable value="#[%dw 2.0 import * from dw::core::Binaries output application/java --- (vars.outboundHeaders default {}) ++ {&quot;Content-Disposition&quot;:&quot;attachment; filename=&quot; ++ vars.outputFile, &quot;Content-Type&quot;:&quot;application/octet-stream&quot;}]" doc:name="Set Variable" doc:id="6be5b7b6-ba85-45f5-b3bf-530a8dc85eae" variableName="outboundHeaders" />
-        <file:read doc:name="Read" doc:id="448940e0-451e-4737-8d94-8d62194d3038" path="#[p('app.home') ++ &quot;/&quot; ++ vars.outputFile]" outputMimeType="application/octet-stream" />
+        <flow-ref doc:name="set-output-file-and-headers-subflow" doc:id="fd3494c6-cb81-4924-a06b-783a71ab76ce" name="set-output-file-and-headers-subflow"/>
     </flow>
-    <flow name="post:\change-env:multipart\form-data:secure-properties-api-config">
-        <logger level="INFO" doc:name="Logger as" doc:id="fccc2381-f265-43e9-85fe-ec499b43a1ad" />
-		<logger level="INFO" doc:name="Logger" doc:id="561cf99d-c299-4de3-82e3-3cfc5b5873cd" message="#[payload]"/>
+    <flow name="post:\file-level:multipart\form-data:secure-properties-api-config">
+        <logger level="INFO" message="post:\file-level:multipart\form-data:secure-properties-api-config" />
+        <ee:transform doc:name="DW Fetch Form Data to Vars" doc:id="651d95bd-4354-44fe-bbe8-064f00a8c882">
+	<ee:message>
+	</ee:message>
+	<ee:variables>
+			<ee:set-variable variableName="operation"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.operation.content]]></ee:set-variable>
+		<ee:set-variable variableName="algorthim"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.algorithm.content]]></ee:set-variable>
+		<ee:set-variable variableName="mode"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.mode.content]]></ee:set-variable>
+		<ee:set-variable variableName="key"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.key.content]]></ee:set-variable>
+		<ee:set-variable variableName="outputfile"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.outputFile.content]]></ee:set-variable>
+		<ee:set-variable variableName="inputFile"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.inputFile.content]]></ee:set-variable>
+		<ee:set-variable variableName="inputFileName"><![CDATA[%dw 2.0
+output application/java
+---
+payload.parts.fileName.content ]]></ee:set-variable>
+		<ee:set-variable variableName="fileExt"><![CDATA[%dw 2.0
+output application/java
+---
+splitBy(payload.parts.fileName.content as String,".")[-1]]]></ee:set-variable>
+		<ee:set-variable variableName="processing_folder"><![CDATA[%dw 2.0
+output application/java
+---
+p("app.home") ++ "/processing_space"]]></ee:set-variable>
+	</ee:variables>
+</ee:transform>
+        <file:write doc:name="input file" doc:id="b52120c7-f225-4bf7-af46-934d066c6803" config-ref="File_Config" path='#[vars.processing_folder ++ "/" ++ vars.inputFileName]'>
+            <file:content><![CDATA[#[payload.parts.inputFile.content]]]></file:content>
+        </file:write>
+        <java:new doc:name="SecurePropertiesWrapper()" doc:id="076629d4-d44b-438d-863e-58e9d847120f" class="com.dejim.SecurePropertiesWrapper" constructor="SecurePropertiesWrapper()" />
+        <java:invoke doc:name="secureFileLevel" doc:id="03ae584f-ea47-4dee-a011-3866ddc3e3a3" instance="#[payload]" class="com.dejim.SecurePropertiesWrapper" method="secureFileLevel(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+            <java:args><![CDATA[#[output application/java
+---
+{
+	arg0: vars.processing_folder,
+	arg1: vars.operation,
+	arg2: vars.algorthim,
+	arg3: vars.mode,
+	arg4: vars.key,
+	arg5: vars.processing_folder ++ "/" ++ vars.inputFileName,
+	arg6: vars.outputfile ++ "." ++  vars.fileExt
+}]]]></java:args>
+        </java:invoke>
+<flow-ref doc:name="set-output-file-and-headers-subflow" doc:id="3225516f-b824-41c1-8e18-022c6a8d5e1d" name="set-output-file-and-headers-subflow" />
+    </flow>
+	<flow name="post:\change-env:multipart\form-data:secure-properties-api-config">
+		<logger level="INFO" doc:name="Logger" doc:id="d46c8e83-ae34-436a-9c0e-80798efffa00" message="post:\change-env:multipart\form-data:secure-properties-api-config" />
 		<ee:transform doc:name="Fetch Form Data to Vars" doc:id="2e7c157a-8428-4750-bc43-368352e67610">
 			<ee:message>
 			</ee:message>
@@ -322,19 +378,23 @@ payload.parts.outputFile.content]]></ee:set-variable>
 				<ee:set-variable variableName="inputFile" ><![CDATA[%dw 2.0
 output application/java
 ---
-payload.parts.inputEnvFile.content]]></ee:set-variable>
+payload.parts.inputFile.content]]></ee:set-variable>
 				<ee:set-variable variableName="fileExt" ><![CDATA[%dw 2.0
 output application/java
 ---
 splitBy(payload.parts.fileName.content as String,".")[-1]]]></ee:set-variable>
+				<ee:set-variable variableName="processing_folder" ><![CDATA[%dw 2.0
+output application/java
+---
+p("app.home") ++ "/processing_space"]]></ee:set-variable>
 			
 </ee:variables>
 		</ee:transform>
-		<file:write doc:name="Input File" doc:id="41ba3ccc-b13b-4226-8415-9400177ce2ad" config-ref="File_Config" path="#[p('app.home') ++ &quot;/input_file.&quot; ++ vars.fileExt]">
+		<file:write doc:name="Input File" doc:id="41ba3ccc-b13b-4226-8415-9400177ce2ad" config-ref="File_Config" path='#[vars.processing_folder ++ "/input_file." ++ vars.fileExt]'>
 			<file:content><![CDATA[#[vars.inputFile]]]></file:content>
 		</file:write>
-		<java:new doc:name="SecurePropertiesWrapper" doc:id="946b616c-fbf3-4292-b4fe-48cf7585ee2d" class="com.dejim.SecurePropertiesWrapper" constructor="SecurePropertiesWrapper()"/>
-		<java:invoke doc:name="Change Env File Class" doc:id="9ab2dc32-543b-4178-9806-936d5fd6290b" instance="#[payload]" class="com.dejim.SecurePropertiesWrapper" method="changeEnvforFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
+		<java:new doc:name="SecurePropertiesWrapper()" doc:id="946b616c-fbf3-4292-b4fe-48cf7585ee2d" class="com.dejim.SecurePropertiesWrapper" constructor="SecurePropertiesWrapper()"/>
+		<java:invoke doc:name="changeEnvforFile" doc:id="9ab2dc32-543b-4178-9806-936d5fd6290b" instance="#[payload]" class="com.dejim.SecurePropertiesWrapper" method="changeEnvforFile(java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String,java.lang.String)">
 			<java:args ><![CDATA[#[output application/java
 ---
 {
@@ -342,23 +402,26 @@ splitBy(payload.parts.fileName.content as String,".")[-1]]]></ee:set-variable>
 	mode: vars.mode,
 	oldKey: vars.oldkey,
 	newKey: vars.newkey,
-	inputFilePath: p("app.home")++ "/input_file." ++ vars.fileExt,
-	outputFilePath: p("app.home")++ "/" ++ vars.outputfile ++ "." ++ vars.fileExt
+	inputFilePath: vars.processing_folder ++ "/input_file." ++ vars.fileExt,
+	outputFilePath: vars.processing_folder ++ "/" ++ vars.outputfile ++ "." ++ vars.fileExt
 }]]]></java:args>
 		</java:invoke>
+		<flow-ref doc:name="set-output-file-and-headers-subflow" doc:id="6eacc700-23e8-411e-8995-9bef4d5ff9e4" name="set-output-file-and-headers-subflow"/>
+    </flow>
+	<sub-flow name="set-output-file-and-headers-subflow" doc:id="e4ba2de9-997f-4487-9a72-6fb0abc7cba4" >
 		<try doc:name="Try" doc:id="47699605-1fcc-431c-8f61-a8918cc4dcfe">
-            <validation:is-false doc:name="Is false" doc:id="9cfe8f67-a525-43b0-8a7e-9451d5b1345a" expression='#[lower(payload) contains("error")]' />
+            <validation:is-false doc:name="Is false" doc:id="9cfe8f67-a525-43b0-8a7e-9451d5b1345a" expression='#[(lower(payload) contains("error")) or (payload startsWith("Invalid"))]' />
             <error-handler>
                 <on-error-propagate enableNotifications="true" logException="true" doc:name="On Error Propagate" doc:id="99b51bb3-ad03-4e48-b704-d9d4cf58eb5d">
                     <raise-error doc:name="Raise error" doc:id="b63f0cf2-e266-4420-bf5d-b55ae8db0f1d" type="APP:ENCRYPT_ERROR" description="#[&quot;Error encrypting file: &quot; ++ payload]" />
                 </on-error-propagate>
             </error-handler>
         </try>
-        <ee:transform doc:name="DW set outbound headers" doc:id="f94c04cc-13cd-4755-a44f-e3ee63be038b" >
-			<ee:message >
+		<ee:transform doc:name="DW set outbound headers" doc:id="f94c04cc-13cd-4755-a44f-e3ee63be038b">
+			<ee:message>
 			</ee:message>
-			<ee:variables >
-				<ee:set-variable variableName="outboundHeaders" ><![CDATA[%dw 2.0
+			<ee:variables>
+				<ee:set-variable variableName="outboundHeaders"><![CDATA[%dw 2.0
 import * from dw::core::Binaries
 output application/java
 ---
@@ -370,6 +433,29 @@ output application/java
 }]]></ee:set-variable>
 			</ee:variables>
 		</ee:transform>
-        <file:read doc:name="Read" doc:id="13109b0f-ecd0-478d-b8f0-578e3f0d89ec" path='#[p("app.home")++ "/" ++ vars.outputfile ++ "." ++ vars.fileExt]' outputMimeType="application/octet-stream" config-ref="File_Config"/>
-    </flow>
+		<file:read doc:name="Output File" doc:id="13109b0f-ecd0-478d-b8f0-578e3f0d89ec" path='#[vars.processing_folder ++ "/" ++ vars.outputfile ++ "." ++ vars.fileExt]' outputMimeType="application/octet-stream" config-ref="File_Config" />
+		<async doc:name="Async" doc:id="c236ff09-6269-4372-bbbf-47e3742bd444" >
+			<flow-ref doc:name="file-cleanup-flow" doc:id="e3302581-f77b-42a4-9c89-3d79571f2932" name="file-cleanup-flow"/>
+		</async>
+	</sub-flow>
+	<flow name="file-cleanup-flow" doc:id="cbd63402-ad84-4275-a796-4ae527439670">
+		<scheduler doc:name="for file cleanup every hour" doc:id="27aee0ce-3680-4978-97ff-ace63760c216">
+			<scheduling-strategy>
+				<fixed-frequency frequency="1" startDelay="1" timeUnit="HOURS" />
+			</scheduling-strategy>
+		</scheduler>
+		<logger level="INFO" doc:name="Logger" doc:id="b4dbc4bb-f1cb-4363-84a5-9b34466136b5" message="Started File Cleanup" />
+		<file:list doc:name="File in Folder" doc:id="2ce6432f-ecb8-4ad0-a06f-c815fbcf4c5d" config-ref="File_Config" directoryPath='#[p("app.home") ++ "/processing_space"]'>
+			<file:matcher notUpdatedInTheLast="5" timeUnit="MINUTES" />
+		</file:list>
+		<foreach doc:name="For Each" doc:id="05dc8837-5648-4168-a034-34930e80e261" collection="#[payload]">
+			<choice doc:name="skip jar file" doc:id="ad05f6ad-5d2d-4f48-a34a-28d780b4628c">
+				<when expression='#[attributes.fileName != "secure-properties-tool.jar"]'>
+					<logger level="INFO" doc:name="Logger" doc:id="3b2df8ee-d128-4e5b-b67d-02b0ad1aeb4f" message='#["Deleting - " ++ attributes.fileName]' />
+					<file:delete doc:name="files" doc:id="0fa20966-4fcc-4af8-aecd-9ed90683520c" config-ref="File_Config" path="#[attributes.path]" />
+				</when>
+			</choice>
+		</foreach>
+		<logger level="INFO" doc:name="Logger" doc:id="44edb859-585c-4f7e-8cb6-03d9fb2cde44" message="Finished File Cleanup" />
+	</flow>
 </mule>

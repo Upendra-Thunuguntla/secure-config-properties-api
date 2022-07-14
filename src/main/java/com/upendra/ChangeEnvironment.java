@@ -127,7 +127,7 @@ public class ChangeEnvironment {
 		BufferedWriter writer = Files.newBufferedWriter(Paths.get(outputFilePath, new String[0]),
 				new java.nio.file.OpenOption[0]);
 		app_home = new File(inputFilePath).getParent();
-	//	System.out.println(app_home);
+		System.out.println("Started Processing the input file");
 		try {
 			for (String line : Files.readAllLines(Paths.get(inputFilePath, new String[0]))) {
 				try {
@@ -153,6 +153,7 @@ public class ChangeEnvironment {
 			}
 			if (writer != null)
 				writer.close();
+			System.out.println("Ended Processing the input file");
 		} catch (Throwable throwable) {
 			if (writer != null)
 				try {

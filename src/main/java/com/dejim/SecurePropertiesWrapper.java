@@ -37,6 +37,7 @@ public class SecurePropertiesWrapper {
 //			System.out.println(response);
 			while ((line = error.readLine()) != null) {
 				response.append(line);
+				System.out.println(line);
 			}
 //			System.out.println(response);
 		} catch (IOException e1) {
@@ -53,6 +54,7 @@ public class SecurePropertiesWrapper {
 
 		String toolString = JAVA_CMD + appHome + JAR_CMD + "file " + operation + " " + algorithm + " " + mode + " "
 				+ key + " " + inputFileLocation + " " + appHome + "/" + outputFile;
+		System.out.println(toolString);
 		try {
 
 			process = Runtime.getRuntime().exec(String.format(toolString));
@@ -80,6 +82,7 @@ public class SecurePropertiesWrapper {
 
 		String toolString = JAVA_CMD + appHome + JAR_CMD + "file-level " + operation + " " + algorithm + " " + mode
 				+ " " + key + " " + inputFileLocation + " " + appHome + "/" + outputFile;
+		System.out.println(toolString);
 		try {
 
 			process = Runtime.getRuntime().exec(String.format(toolString));
