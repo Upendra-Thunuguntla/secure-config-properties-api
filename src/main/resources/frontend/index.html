@@ -7,10 +7,18 @@
 
         <!-- Bootstrap CSS -->
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous" />
-
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
         <title>Secure Properties Generator</title>
     </head>
     <style>
+.required label {
+    font-weight: bold;
+}
+.required label:after {
+    color: #e32;
+    content: ' *';
+    display:inline;
+}
 .loader  {
   animation: rotate 1s infinite;  
   height: 50px;
@@ -103,16 +111,16 @@
                       <div class="card-header">
                         <ul class="nav nav-tabs card-header-tabs" id="secure-type-list" role="tablist">
                           <li class="nav-item">
-                            <a class="nav-link active" href="#string" role="tab" aria-controls="string" aria-selected="true">String</a>
+                            <a class="nav-link active" href="#string" role="tab" aria-controls="string" aria-selected="true">String <i class="fa fa-info-circle" data-toggle="tooltip" title="This lets developer to encrypt or decrpty a string with given key"></i></a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link"  href="#file" role="tab" aria-controls="file" aria-selected="false">File</a>
+                            <a class="nav-link"  href="#file" role="tab" aria-controls="file" aria-selected="false">File <i class="fa fa-info-circle" data-toggle="tooltip" title="This lets developer to encrypt or decrypt a properties file (*.properties or *.YAML)" ></i></a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="#file-level" role="tab" aria-controls="file-level" aria-selected="false">File Level</a>
+                            <a class="nav-link" href="#file-level" role="tab" aria-controls="file-level" aria-selected="false">File Level <i class="fa fa-info-circle" data-toggle="tooltip" title="This lets developer to encrypt or decrpty whole content of file." ></i></a>
                           </li>
                           <li class="nav-item">
-                            <a class="nav-link" href="#change-env" role="tab" aria-controls="change-env" aria-selected="false">Change Environment</a>
+                            <a class="nav-link" href="#change-env" role="tab" aria-controls="change-env" aria-selected="false">Change Environment <i class="fa fa-info-circle" data-toggle="tooltip" title="This lets developer to move a properties file from one Environment to another (decrypt and encrypt) with ease." ></i></a>
                           </li>
                         </ul>
                       </div>
@@ -138,23 +146,10 @@
                                         <select class="custom-select d-block w-100" id="algorithm" name="algorithm" data-toggle="tooltip" data-placement="top" title="Tooltip on top" required>
                                             <option value="AES" selected>AES (default)</option>
                                             <option value="Blowfish">Blowfish</option>
-                                            <option value="CAST5">CAST5</option>
-                                            <option value="CAST6">CAST6</option>
-                                            <option value="Camellia">Camellia</option>
                                             <option value="DES">DES</option>
                                             <option value="DESede">DESede</option>
-                                            <option value="Noekeon">Noekeon</option>
                                             <option value="RC2">RC2</option>
-                                            <option value="RC5">RC5</option>
-                                            <option value="RC6">RC6</option>
-                                            <option value="RSA">RSA</option>
-                                            <option value="Rijndael">Rijndael</option>
-                                            <option value="SEED">SEED</option>
-                                            <option value="Serpent">Serpent</option>
-                                            <option value="Skipjack">Skipjack</option>
-                                            <option value="TEA">TEA</option>
-                                            <option value="Twofish">Twofish</option>
-                                            <option value="XTEA">XTEA</option>
+                                            <option value="RCA">RCA</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select an algorithm.
@@ -215,23 +210,10 @@
                                         <select class="custom-select d-block w-100" id="algorithm" name="algorithm" data-toggle="tooltip" data-placement="top" title="Tooltip on top" required>
                                             <option value="AES" selected>AES (default)</option>
                                             <option value="Blowfish">Blowfish</option>
-                                            <option value="CAST5">CAST5</option>
-                                            <option value="CAST6">CAST6</option>
-                                            <option value="Camellia">Camellia</option>
                                             <option value="DES">DES</option>
                                             <option value="DESede">DESede</option>
-                                            <option value="Noekeon">Noekeon</option>
                                             <option value="RC2">RC2</option>
-                                            <option value="RC5">RC5</option>
-                                            <option value="RC6">RC6</option>
-                                            <option value="RSA">RSA</option>
-                                            <option value="Rijndael">Rijndael</option>
-                                            <option value="SEED">SEED</option>
-                                            <option value="Serpent">Serpent</option>
-                                            <option value="Skipjack">Skipjack</option>
-                                            <option value="TEA">TEA</option>
-                                            <option value="Twofish">Twofish</option>
-                                            <option value="XTEA">XTEA</option>
+                                            <option value="RCA">RCA</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select an algorithm.
@@ -311,23 +293,10 @@
                                         <select class="custom-select d-block w-100" id="algorithm" name="algorithm" data-toggle="tooltip" data-placement="top" title="Tooltip on top" required>
                                             <option value="AES" selected>AES (default)</option>
                                             <option value="Blowfish">Blowfish</option>
-                                            <option value="CAST5">CAST5</option>
-                                            <option value="CAST6">CAST6</option>
-                                            <option value="Camellia">Camellia</option>
                                             <option value="DES">DES</option>
                                             <option value="DESede">DESede</option>
-                                            <option value="Noekeon">Noekeon</option>
                                             <option value="RC2">RC2</option>
-                                            <option value="RC5">RC5</option>
-                                            <option value="RC6">RC6</option>
-                                            <option value="RSA">RSA</option>
-                                            <option value="Rijndael">Rijndael</option>
-                                            <option value="SEED">SEED</option>
-                                            <option value="Serpent">Serpent</option>
-                                            <option value="Skipjack">Skipjack</option>
-                                            <option value="TEA">TEA</option>
-                                            <option value="Twofish">Twofish</option>
-                                            <option value="XTEA">XTEA</option>
+                                            <option value="RCA">RCA</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select an algorithm.
@@ -419,23 +388,10 @@
                                         <select class="custom-select d-block w-100" id="algorithm" name="algorithm" data-toggle="tooltip" data-placement="top"  required>
                                             <option value="AES" selected>AES (default)</option>
                                             <option value="Blowfish">Blowfish</option>
-                                            <option value="CAST5">CAST5</option>
-                                            <option value="CAST6">CAST6</option>
-                                            <option value="Camellia">Camellia</option>
                                             <option value="DES">DES</option>
                                             <option value="DESede">DESede</option>
-                                            <option value="Noekeon">Noekeon</option>
                                             <option value="RC2">RC2</option>
-                                            <option value="RC5">RC5</option>
-                                            <option value="RC6">RC6</option>
-                                            <option value="RSA">RSA</option>
-                                            <option value="Rijndael">Rijndael</option>
-                                            <option value="SEED">SEED</option>
-                                            <option value="Serpent">Serpent</option>
-                                            <option value="Skipjack">Skipjack</option>
-                                            <option value="TEA">TEA</option>
-                                            <option value="Twofish">Twofish</option>
-                                            <option value="XTEA">XTEA</option>
+                                            <option value="RCA">RCA</option>
                                         </select>
                                         <div class="invalid-feedback">
                                             Please select an algorithm.
@@ -470,16 +426,29 @@
                                         <input type="text" class="form-control" id="outputFile" name="outputFile" required />
                                     </div>
                                 </div>
-                    
+                                
                                 <div class="row">
-                                    <div class="col-md-12">
-                                    <label>Input File</label>
+                                    <div class="col-md-8">
+                                        <label>Input File</label>
                                     <div class="custom-file">
                                         <label class="custom-file-label" id="inputfilelabel3" for="inputFile3">Choose a properties file...</label>
                                         <input type="file" class="form-control custom-file-input" name="inputFile" id="inputFile3" required>
                                     </div>
                                     </div>
+                                    <div class="col-md-4 mb-3">
+                                        <label for="fullsecure">File Contents</label>
+                                        <select class="custom-select d-block w-100 " id="fullsecure" name="fullsecure" required >
+                                            <option hidden  disabled selected value> -- select an option -- </option>
+                                            <option value="true">contains only Secure Values</option>
+                                            <option value="false" >contains both Secure and Insecure Values</option>
+                                        </select>
+                                        <div class="invalid-feedback">
+                                            Please provide a valid type.
+                                        </div>
+                                    </div>
                                 </div>
+                                
+                                   
                                 <input type="hidden" id="method" name="method" value="change-env" />
                                 <hr class="mb-4" />
                                 <input id="btn-submit" class="btn btn-primary btn-lg btn-block"  type="submit" name="submit" value="Generate" />
@@ -500,9 +469,13 @@
 
             <!-- Output section -->
             <div class="card text-center" >
-              <div class="card-header">Result</div>
+              <div class="card-header">
+                <h5 class="card-title">Result</h5></div>
               <div class="card-body">
                 <p class="card-text" id="server-results"></p>                              
+              </div>
+              <div class="card-footer text-muted" id="clickCount" style="display: none;">
+                This tool is used xxxx times.
               </div>
             </div> 
             <!-- End of output section -->
@@ -525,6 +498,25 @@
 
 
         <script>
+
+            //update clickCount
+                function updateClickCount() {
+                    var clickCount = document.getElementById("clickCount");
+                    if (clickCount.style.display === "none") {
+                        clickCount.style.display = "block";
+                    } 
+                    // else {
+                    //     x.style.display = "none";
+                    // }
+                    var xhr = new XMLHttpRequest();
+                    xhr.open("GET", "https://api.countapi.xyz/hit/secureprops/clicks");
+                    xhr.responseType = "json";
+                    xhr.onload = function () {
+                        var response = xhr.response;
+                        clickCount.innerHTML = "This tool helped our mulesoft community " + response.value + " times.";
+                    }
+                    xhr.send();
+            }
 
             function updateFieldNames(sectionNumber, fileName) {
                 console.log(fileName);
@@ -631,15 +623,24 @@
                     contentType: false,
                     cache: false,
                     processData: false,
+                    beforeSend: function(){
+                        $("#server-results").text("");
+                        displayLoader();
+                    },
                     success: function (data) {
+                    
                       $("#server-results").text(data.property);
                       console.log("SUCCESS : ", data);
                       $("#btn-submit").prop("disabled", false);
+                      updateClickCount();
                     },
                     error: function (e) {
                       $("#server-results").text(e.responseText);
                       console.log("ERROR : ", e);
                       $("#btn-submit").prop("disabled", false);
+                    },
+                    complete: function(){
+                        hideLoader();
                     }
                 });
             });
@@ -658,6 +659,7 @@
                     cache: false,
                     processData: false,
                     beforeSend: function(){
+                        $("#server-results").text("");
                         displayLoader();
                     },
                     success: function (response, status, xhr) {
@@ -696,6 +698,7 @@
                         }
 
                         setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                        updateClickCount();
                     },
                     error: function (e) {
                       $("#server-results").text(e.responseJSON);
@@ -722,6 +725,7 @@
                     cache: false,
                     processData: false,
                     beforeSend: function(){
+                        $("#server-results").text("");
                         displayLoader();
                     },
                     success: function (response, status, xhr) {
@@ -760,6 +764,7 @@
                         }
 
                         setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                        updateClickCount();
                     },
                     error: function (e) {
                       $("#server-results").text(e.responseJSON);
@@ -790,6 +795,7 @@
                     cache: false,
                     processData: false,
                     beforeSend: function(){
+                        $("#server-results").text("");
                         displayLoader();
                     },
                     success: function (response, status, xhr) {
@@ -828,6 +834,7 @@
                         }
 
                         setTimeout(function () { URL.revokeObjectURL(downloadUrl); }, 100); // cleanup
+                        updateClickCount();
                     },
                     error: function (e) {
                       $("#server-results").text(e.responseJSON);

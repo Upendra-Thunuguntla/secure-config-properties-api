@@ -52,4 +52,4 @@ velocity.log
 # Others #
 # ------ #
 src/main/java/sample/**
-!src/main/resources/secure-properties-tool.jar
+!src/main/resources/processing_space/secure-properties-tool.jar
